@@ -1,23 +1,23 @@
 import * as React from 'react'
 import { observable } from 'mobx'
-import { observer } from 'mobx-react'
+import { observer, Provider } from 'mobx-react'
 
+import { ScheduleController } from './ScheduleController'
 import ScheduleDay from './ScheduleDay'
 import ScheduleWeek from './ScheduleWeek'
 import ScheduleMonth from './ScheduleMonth'
 
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 
 @observer
 class ScheduleContainer extends React.Component<{}, {}> {
     @observable tabIndex: number = 0
+    ScheduleController: ScheduleController
 
     constructor(props: any) {
         super(props)
+        this.ScheduleController = new ScheduleController()
     }
 
     handleTabChange = (event: any, value: number): void => {
@@ -37,21 +37,14 @@ class ScheduleContainer extends React.Component<{}, {}> {
                     <Tab classes={{ root: 'tab-root', selected: 'tab-selected' }} label='Monthly' />
                 </Tabs>
                 <div className='tab-content'>
-                    {this.tabIndex == 0 && <ScheduleDay />}
-                    {this.tabIndex == 1 && <ScheduleWeek />}
-                    {this.tabIndex == 2 && <ScheduleMonth />}
+                    <Provider ScheduleController={this.ScheduleController}>
+                        <div>
+                            {this.tabIndex == 0 && <ScheduleDay {...this.props} />}
+                            {this.tabIndex == 1 && <ScheduleWeek />}
+                            {this.tabIndex == 2 && <ScheduleMonth />}
+                        </div>
+                    </Provider>
                 </div>
-                {/* <Button variant='raised' color='primary'>
-                    Hello World
-                </Button>
-                <Grid container spacing={16}>
-                    <Grid container justify="center">
-                        {[0, 1, 2].map((value: number) => (
-                            <Grid key={value} item>
-                                texto aqui
-                        </Grid>))}
-                    </Grid>
-                </Grid> */}
             </div>
         )
     }

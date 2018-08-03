@@ -19,8 +19,6 @@
 
 .btn {
     color: white !important;
-    float: right;
-    margin-left: 10px !important;
     font-weight: 400 !important;
 }
 
@@ -38,10 +36,20 @@
 
 .btn-confirm {
     background-color: #82BF64 !important;
+    margin-left: 10px !important;
+    float: right;
+    margin-right: -10px !important;
 }
 
 .btn-cancel {
     background-color: #196FAE !important;
+    margin-left: 10px !important;
+    float: right;
+}
+
+.btn-delete {
+    background-color: #F95358 !important;
+    float: left;
 }
 
 .schedule-day-page {
@@ -99,6 +107,25 @@
 
 .daily-tile-right {
     padding: 30px 15px 35px 7.5px !important;
+    .month-navigator {
+        margin-left: 7px;
+        margin-bottom: 5px;
+        width: 30px;
+        height: 10px;
+        .arrow {
+            cursor: pointer;
+            border-top: solid 5px transparent;
+            border-bottom: solid 5px transparent;
+            &.left {
+                float: left;
+                border-right: solid 5px #0A405D;
+            }
+            &.right {
+                float: right;
+                border-left: solid 5px #0A405D;
+            }
+        }
+    }
 }
 
 .rc-calendar-header {
@@ -176,6 +203,12 @@
         li {
             padding: 20px 0;
             border-bottom: solid thin #E4E4E4;
+            &:hover {
+                &:not(:last-child) {
+                    background-color: #dddddd;
+                    cursor: pointer;
+                }
+            }
         }
     }
     .appointment {
@@ -207,12 +240,6 @@
 .closeButton {
     color: #787878;
 }
-
-// @media (max-width: 800px) {
-//     .modal {
-//         min-width: 400px
-//     }
-// }
 
 .modal-schedule-container {
     padding: 10px;

@@ -7,30 +7,53 @@ import TextField from '@material-ui/core/TextField';
 import moment from 'moment'
 
 interface Schedule {
-    [key: string]: string
+    _id?: string,
+    name: string,
+    description?: string,
+    date: string,
 }
 
 interface EventObject {
     [key: string]: any
 }
 
+interface ModalScheduleProps extends React.Props<any> {
+    closeModal: any
+    saveClick: any,
+    removeClick: any,
+    editCompromise: any,
+    calendarDate: any
+}
+
 @observer
-export default class ModalSchedule extends React.Component<{}, {}> {
-    defaultValue: string = '2017-05-24T10:30'
-    @observable schedule: Schedule = { name: '', description: '', date: '' }
+export default class ModalSchedule extends React.Component<ModalScheduleProps, {}> {
+    @observable schedule: Schedule
+    @observable time: string
+    date: string
 
     constructor(props: any) {
         super(props)
-        this.closeModal = props.closeModal
+        this.schedule = { name: '', description: '', date: '' }
     }
 
-    dateChange = (event: EventObject) => {
-        this.schedule.date = event.target.value
-        console.log('schedule', this.schedule)
+    componentDidMount() {
+        if (this.props.editCompromise) {
+            this.schedule._id = this.props.editCompromise._id,
+                this.schedule.name = this.props.editCompromise.name,
+                this.schedule.description = this.props.editCompromise.description || '',
+                this.time = moment(this.props.editCompromise.date).format('HH:mm')
+            this.date = moment(this.props.editCompromise.date).format('YYYY-MM-DD')
+        } else {
+            this.date = moment(this.props.calendarDate).format('YYYY-MM-DD')
+        }
+    }
+
+    timeChange = (event: EventObject) => {
+        this.time = event.target.value
     }
 
     closeModal = () => {
-
+        this.props.closeModal()
     }
 
     handleInputChange = (event: EventObject) => {
@@ -44,13 +67,32 @@ export default class ModalSchedule extends React.Component<{}, {}> {
             case 'description':
                 this.schedule.description = value
                 break
-            case 'date':
-                this.schedule.date = value
+            case 'time':
+                this.time = value
                 break
             default:
                 break
         }
         return
+    }
+
+    saveClick = () => {
+        if (!this.schedule.name) {
+            console.log('you have to insert a name')
+            return
+        }
+
+        if (!this.time) {
+            console.log('you have to select a time')
+            return
+        }
+
+        this.schedule.date = moment(this.date).format('YYYY-MM-DD') + 'T' + this.time
+        this.props.saveClick(this.schedule)
+    }
+
+    removeClick = () => {
+        this.props.removeClick(this.props.editCompromise._id)
     }
 
     render() {
@@ -62,11 +104,10 @@ export default class ModalSchedule extends React.Component<{}, {}> {
                         <div className='input-container'>
                             <div className='input-label'>Time</div>
                             <TextField
-                                name='date'
-                                type='datetime-local'
-                                value={this.schedule.date || this.defaultValue}
-                                onChange={this.dateChange}
-                                defaultValue={this.defaultValue}
+                                name='time'
+                                type='time'
+                                value={this.time || ''}
+                                onChange={this.timeChange}
                                 className='datepicker'
                                 InputLabelProps={{
                                     shrink: true,
@@ -77,19 +118,20 @@ export default class ModalSchedule extends React.Component<{}, {}> {
                     <Grid item xs={12}>
                         <div className='input-container'>
                             <div className='input-label'>Name</div>
-                            <input type='text' name='name' value={this.schedule.name} onChange={this.handleInputChange} />
+                            <input type='text' name='name' value={this.schedule.name || ''} onChange={this.handleInputChange} />
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className='input-container'>
                             <div className='input-label'>Description</div>
-                            <textarea name='description' value={this.schedule.description} onChange={this.handleInputChange}></textarea>
+                            <textarea name='description' value={this.schedule.description || ''} onChange={this.handleInputChange}></textarea>
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className='input-container'>
-                            <Button className='btn btn-confirm' variant='contained'>Confirm</Button>
-                            <Button className='btn btn-cancel' variant='contained'>Cancel</Button>
+                            <Button onClick={this.saveClick} className='btn btn-confirm' variant='contained'>Save</Button>
+                            <Button onClick={this.closeModal} className='btn btn-cancel' variant='contained'>Cancel</Button>
+                            {this.props.editCompromise && <Button onClick={this.removeClick} className='btn btn-delete' variant='contained'>Remove</Button>}
                         </div>
                     </Grid>
                 </Grid>
