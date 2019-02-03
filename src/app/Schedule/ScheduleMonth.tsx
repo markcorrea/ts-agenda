@@ -4,11 +4,7 @@ import { observer } from 'mobx-react'
 
 @observer
 export default class ScheduleMonth extends React.Component<{}, {}> {
-    render() {
-        return (
-            <div>
-                monthly
-            </div>
-        )
-    }
+  render() {
+    return <div>monthly</div>
+  }
 }

@@ -12,43 +12,53 @@ import Tab from '@material-ui/core/Tab'
 
 @observer
 class ScheduleContainer extends React.Component<{}, {}> {
-    @observable tabIndex: number = 0
-    ScheduleController: ScheduleController
+  @observable tabIndex: number = 0
+  ScheduleController: ScheduleController
 
-    constructor(props: any) {
-        super(props)
-        this.ScheduleController = new ScheduleController()
-    }
+  constructor(props: any) {
+    super(props)
+    this.ScheduleController = new ScheduleController()
+  }
 
-    handleTabChange = (event: any, value: number): void => {
-        this.tabIndex = value
-    }
+  handleTabChange = (event: any, value: number): void => {
+    this.tabIndex = value
+  }
 
-    tabClass() {
+  tabClass() {}
 
-    }
-
-    render() {
-        return (
-            <div className={'schedule-container'}>
-                <Tabs classes={{ indicator: 'big-indicator' }} value={this.tabIndex} onChange={this.handleTabChange}>
-                    <Tab classes={{ root: 'tab-root', selected: 'tab-selected' }} label='Daily' />
-                    <Tab classes={{ root: 'tab-root', selected: 'tab-selected' }} label='Weely' />
-                    <Tab classes={{ root: 'tab-root', selected: 'tab-selected' }} label='Monthly' />
-                </Tabs>
-                <div className='tab-content'>
-                    <Provider ScheduleController={this.ScheduleController}>
-                        <div>
-                            {this.tabIndex == 0 && <ScheduleDay {...this.props} />}
-                            {this.tabIndex == 1 && <ScheduleWeek />}
-                            {this.tabIndex == 2 && <ScheduleMonth />}
-                        </div>
-                    </Provider>
-                </div>
+  render() {
+    return (
+      <div className={'schedule-container'}>
+        <Tabs
+          classes={{ indicator: 'big-indicator' }}
+          value={this.tabIndex}
+          onChange={this.handleTabChange}
+        >
+          <Tab
+            classes={{ root: 'tab-root', selected: 'tab-selected' }}
+            label='Daily'
+          />
+          <Tab
+            classes={{ root: 'tab-root', selected: 'tab-selected' }}
+            label='Weely'
+          />
+          <Tab
+            classes={{ root: 'tab-root', selected: 'tab-selected' }}
+            label='Monthly'
+          />
+        </Tabs>
+        <div className='tab-content'>
+          <Provider ScheduleController={this.ScheduleController}>
+            <div>
+              {this.tabIndex == 0 && <ScheduleDay {...this.props} />}
+              {this.tabIndex == 1 && <ScheduleWeek />}
+              {this.tabIndex == 2 && <ScheduleMonth />}
             </div>
-        )
-    }
-
+          </Provider>
+        </div>
+      </div>
+    )
+  }
 }
 
 export default ScheduleContainer
