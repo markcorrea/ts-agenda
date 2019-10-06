@@ -2,7 +2,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { observer } from 'mobx-react'
 import './media/styles/main.scss'
-import Header from './components/header'
+import { Header } from './components/header'
 import ScheduleContainer from './app/Schedule/ScheduleContainer'
 
 @observer

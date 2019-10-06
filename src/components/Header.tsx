@@ -1,7 +1,7 @@
 import React from 'react'
 const userImage = require('../media/images/userMarcus.jpg')
 
-export default class Header extends React.Component<{}, {}> {
+export class Header extends React.Component<{}, {}> {
   render() {
     return (
       <div className='header'>
