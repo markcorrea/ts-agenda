@@ -40,15 +40,16 @@ export default class ModalSchedule extends React.Component<
   }
 
   componentDidMount() {
+    let { schedule, time, date, props } = this
+
     if (this.props.editCompromise) {
-      ;(this.schedule._id = this.props.editCompromise._id),
-        (this.schedule.name = this.props.editCompromise.name),
-        (this.schedule.description =
-          this.props.editCompromise.description || ''),
-        (this.time = moment(this.props.editCompromise.date).format('HH:mm'))
-      this.date = moment(this.props.editCompromise.date).format('YYYY-MM-DD')
+      schedule._id = props.editCompromise._id
+      schedule.name = props.editCompromise.name
+      schedule.description = props.editCompromise.description || ''
+      time = moment(props.editCompromise.date).format('HH:mm')
+      date = moment(props.editCompromise.date).format('YYYY-MM-DD')
     } else {
-      this.date = moment(this.props.calendarDate).format('YYYY-MM-DD')
+      date = moment(props.calendarDate).format('YYYY-MM-DD')
     }
   }
 
@@ -81,26 +82,39 @@ export default class ModalSchedule extends React.Component<
   }
 
   saveClick = () => {
-    if (!this.schedule.name) {
+    const { schedule, time, date, props } = this
+
+    if (!schedule.name) {
       console.log('you have to insert a name')
       return
     }
 
-    if (!this.time) {
+    if (!time) {
       console.log('you have to select a time')
       return
     }
 
-    this.schedule.date =
-      moment(this.date).format('YYYY-MM-DD') + 'T' + this.time
-    this.props.saveClick(this.schedule)
+    schedule.date = moment(date).format('YYYY-MM-DD') + 'T' + time
+    props.saveClick(schedule)
   }
 
   removeClick = () => {
-    this.props.removeClick(this.props.editCompromise._id)
+    const { props } = this
+    props.removeClick(props.editCompromise._id)
   }
 
   render() {
+    const {
+      time,
+      timeChange,
+      schedule,
+      handleInputChange,
+      saveClick,
+      closeModal,
+      removeClick,
+      props,
+    } = this
+
     return (
       <div className='modal-schedule-container'>
         <h1>Register new schedule</h1>
@@ -111,8 +125,8 @@ export default class ModalSchedule extends React.Component<
               <TextField
                 name='time'
                 type='time'
-                value={this.time || ''}
-                onChange={this.timeChange}
+                value={time || ''}
+                onChange={timeChange}
                 className='datepicker'
                 InputLabelProps={{
                   shrink: true,
@@ -126,8 +140,8 @@ export default class ModalSchedule extends React.Component<
               <input
                 type='text'
                 name='name'
-                value={this.schedule.name || ''}
-                onChange={this.handleInputChange}
+                value={schedule.name || ''}
+                onChange={handleInputChange}
               />
             </div>
           </Grid>
@@ -136,30 +150,30 @@ export default class ModalSchedule extends React.Component<
               <div className='input-label'>Description</div>
               <textarea
                 name='description'
-                value={this.schedule.description || ''}
-                onChange={this.handleInputChange}
+                value={schedule.description || ''}
+                onChange={handleInputChange}
               />
             </div>
           </Grid>
           <Grid item xs={12}>
             <div className='input-container'>
               <Button
-                onClick={this.saveClick}
+                onClick={saveClick}
                 className='btn btn-confirm'
                 variant='contained'
               >
                 Save
               </Button>
               <Button
-                onClick={this.closeModal}
+                onClick={closeModal}
                 className='btn btn-cancel'
                 variant='contained'
               >
                 Cancel
               </Button>
-              {this.props.editCompromise && (
+              {props.editCompromise && (
                 <Button
-                  onClick={this.removeClick}
+                  onClick={removeClick}
                   className='btn btn-delete'
                   variant='contained'
                 >
