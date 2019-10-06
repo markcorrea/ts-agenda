@@ -1,9 +1,13 @@
 
 
 .header {
+    .logo {
+      float: left;
+      margin-top: 7px;
+    }
     .logo-title {
         float: left;
-        margin-left: 15px;
+        margin-left: 8px;
         margin-top: 9px;
         font-weight: 400;
         color: #505050;
