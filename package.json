@@ -44,7 +44,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build",
-    "build": "webpack-dev-server --hot --open"
+    "build": "webpack -d && cp ./index.html dist/index.html && webpack-dev-server --hot --open",
+    "build:prod": "webpack -p && cp ./index.html dist/index.html"
   },
   "author": "",
   "license": "ISC"

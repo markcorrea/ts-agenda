@@ -2,19 +2,18 @@ var path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: "./src/index.tsx",
+    entry: [
+      "./src/index.tsx"
+    ],
     devtool: "source-map",
-    // devServer: {
-    //     hot: true
-    // },
     mode: 'development',
     plugins: [
         new webpack.HotModuleReplacementPlugin()
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: "./bundle.js",
-        publicPath: '/static/'
+        publicPath: '/'
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"]
@@ -23,7 +22,8 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: "babel-loader!ts-loader"
+                loader: "babel-loader!ts-loader",
+                include: path.join(__dirname, 'src')
             },
             {
                 test: /\.(scss|css)$/,
