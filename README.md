@@ -1,7 +1,7 @@
 # TS Agenda
 
 This project is available accessing the Netlify link:
-- <ADD LINK HERE>
+- https://tsagenda.netlify.com
 
 Project Overview:
 
